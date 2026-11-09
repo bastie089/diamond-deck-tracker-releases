@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diamond Deck Tracker</title>
+<meta name="description" content="Kostenloser Deck-Tracker für Windows: Overlay mit Restkarten, Gegnerkarten, Statistik und Metadecks.">
+<link rel="icon" href="gem.png">
+<style>
+  :root {
+    --bg: #050507; --surface: rgba(18,18,26,.72); --border: rgba(255,255,255,.10);
+    --text: #f2f3f6; --muted: #8b8d96; --accent: #d9dce4; --accent-text: #08080a;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--bg); color: var(--text); min-height: 100vh;
+    font: 16px/1.6 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    background-image:
+      radial-gradient(900px 500px at 50% -10%, rgba(217,220,228,.10), transparent 70%),
+      linear-gradient(135deg, rgba(255,255,255,.025) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.025) 50%, rgba(255,255,255,.025) 75%, transparent 75%);
+    background-size: auto, 56px 56px;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 56px 16px 40px; text-align: center; }
+  .lang { position: absolute; top: 16px; right: 16px; display: flex; gap: 4px; }
+  .lang button {
+    background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 999px;
+    padding: 4px 12px; font: inherit; font-size: 13px; cursor: pointer;
+  }
+  .lang button[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+  .gem { width: 132px; height: 132px; filter: drop-shadow(0 12px 40px rgba(217,220,228,.25)); animation: float 6s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-8px) rotate(4deg); } }
+  h1 {
+    font-size: clamp(32px, 7vw, 52px); font-weight: 600; letter-spacing: -.02em; margin-top: 18px;
+    background: linear-gradient(180deg, #ffffff, #a9adb8); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .tagline { color: var(--muted); font-size: 18px; margin: 10px auto 36px; max-width: 520px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px 24px;
+    backdrop-filter: blur(12px); box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  }
+  .download {
+    display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
+    background: linear-gradient(180deg, #ffffff, var(--accent)); color: var(--accent-text);
+    font-weight: 600; font-size: 19px; padding: 16px 34px; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(217,220,228,.22); transition: transform .15s, box-shadow .15s;
+  }
+  .download:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(217,220,228,.32); }
+  .download svg { width: 22px; height: 22px; }
+  .meta { color: var(--muted); font-size: 14px; margin-top: 14px; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 28px 0 0; text-align: left; }
+  .feature { border: 1px solid var(--border); border-radius: 14px; padding: 16px; background: rgba(255,255,255,.02); }
+  .feature b { display: block; margin-bottom: 4px; }
+  .feature span { color: var(--muted); font-size: 14px; }
+  .hint { margin-top: 28px; text-align: left; color: var(--muted); font-size: 14px; }
+  .hint b { color: var(--text); }
+  footer { color: var(--muted); font-size: 12px; margin-top: 40px; line-height: 1.5; }
+  [data-lang="en"] .de, [data-lang="de"] .en { display: none; }
+</style>
+</head>
+<body data-lang="de">
+<div class="lang">
+  <button type="button" data-set="de" aria-pressed="true">DE</button>
+  <button type="button" data-set="en" aria-pressed="false">EN</button>
+</div>
+<main>
+  <img class="gem" src="gem.png" alt="">
+  <h1>Diamond Deck Tracker</h1>
+  <p class="tagline">
+    <span class="de">Dein kostenloser Deck-Tracker mit Overlay, Statistik und Metadecks.</span>
+    <span class="en">Your free deck tracker with overlay, statistics and meta decks.</span>
+  </p>
+
+  <section class="card">
+    <a class="download" id="download" href="https://github.com/bastie089/diamond-deck-tracker-releases/releases/latest/download/DiamondDeckTracker-win-Setup.exe">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+      <span class="de">Kostenlos herunterladen</span><span class="en">Download for free</span>
+    </a>
+    <p class="meta"><span class="de">Für Windows 10 und 11</span><span class="en">For Windows 10 and 11</span><span id="version"></span></p>
+
+    <div class="features">
+      <div class="feature"><b class="de">Live-Overlay</b><b class="en">Live overlay</b>
+        <span class="de">Restkarten mit Ziehchance und alles, was der Gegner gespielt hat.</span>
+        <span class="en">Cards left with draw chances and everything the opponent played.</span></div>
+      <div class="feature"><b class="de">Gegner-Deck erkennen</b><b class="en">Opponent deck guess</b>
+        <span class="de">Erkennt das Deck des Gegners und hilft bei Geheimnissen.</span>
+        <span class="en">Guesses the opponent's deck and helps with secrets.</span></div>
+      <div class="feature"><b class="de">Statistik</b><b class="en">Statistics</b>
+        <span class="de">Siegquote je Deck, Klasse und Gegner-Deck, Wochenrückblick.</span>
+        <span class="en">Win rate per deck, class and opponent deck, weekly recap.</span></div>
+      <div class="feature"><b class="de">Metadecks</b><b class="en">Meta decks</b>
+        <span class="de">Ein starkes Deck pro Klasse, Deckcode mit einem Klick kopieren.</span>
+        <span class="en">One strong deck per class, copy the deck code with one click.</span></div>
+    </div>
+
+    <p class="hint">
+      <span class="de"><b>Hinweis:</b> Windows kann beim ersten Start „Der Computer wurde durch Windows geschützt“ anzeigen, weil die App noch nicht signiert ist. Klicke dann auf „Weitere Informationen“ und „Trotzdem ausführen“. Danach aktualisiert sich die App bei jedem Start von selbst.</span>
+      <span class="en"><b>Note:</b> On first start Windows may show “Windows protected your PC” because the app is not signed yet. Click “More info” and “Run anyway”. After that the app updates itself on every start.</span>
+    </p>
+  </section>
+
+  <footer>
+    <span class="de">Diamond Deck Tracker ist ein inoffizielles Fan-Projekt und nicht mit Blizzard Entertainment verbunden. Hearthstone® ist eine Marke von Blizzard Entertainment, Inc.</span>
+    <span class="en">Diamond Deck Tracker is an unofficial fan project and not affiliated with Blizzard Entertainment. Hearthstone® is a trademark of Blizzard Entertainment, Inc.</span>
+  </footer>
+</main>
+<script>
+  const body = document.body;
+  function setLang(lang) {
+    body.dataset.lang = lang;
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.set === lang));
+    try { localStorage.setItem('ddt-lang', lang); } catch (e) {}
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.set)));
+  let saved = null;
+  try { saved = localStorage.getItem('ddt-lang'); } catch (e) {}
+  const browserLang = (navigator.language || 'de').toLowerCase().startsWith('de') ? 'de' : 'en';
+  setLang(saved === 'de' || saved === 'en' ? saved : browserLang);
+
+  // show the latest version next to the button
+  fetch('https://api.github.com/repos/bastie089/diamond-deck-tracker-releases/releases/latest')
+    .then(r => r.ok ? r.json() : null)
+    .then(r => { if (r && r.tag_name) document.getElementById('version').textContent = ' · ' + r.tag_name; })
+    .catch(() => {});
+</script>
+</body>
+</html>
